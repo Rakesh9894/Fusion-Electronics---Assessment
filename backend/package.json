@@ -5,7 +5,7 @@
   "description": "A backend server for Fusion Electronics - a MERN stack e-commerce website",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec 'cd seed && node productSeeds.js dev && cd .. && node index.js'",
+    "start": "nodemon --exec start-server.bat",
     "build": "cd seed && node productSeeds.js dev && cd .. && node index.js",
     "test": "cd seed && node productSeeds.js dev && cd .. && node index.js",
     "dev": "nodemon --exec 'cd seed && node productSeeds.js dev && cd .. && node index.js'"

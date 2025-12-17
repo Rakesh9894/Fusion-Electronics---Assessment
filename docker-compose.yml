@@ -5,11 +5,12 @@ services:
     build:
       context: ./backend
     ports:
-      - "8080:8080"
+      - "5000:5000"
     environment:
-      - MONGO_URI=mongodb://localhost:27017/Ecommerce-Products
+      - MONGO_URI=mongodb://mongodb:27017/Ecommerce-Products
     depends_on:
       - mongodb
+    restart: always
 
   frontend:
     build:
@@ -18,8 +19,15 @@ services:
       - "3000:80"
     depends_on:
       - backend
+    restart: always
 
   mongodb:
     image: mongo:6.0
     ports:
       - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    restart: always
+
+volumes:
+  mongo-data:
