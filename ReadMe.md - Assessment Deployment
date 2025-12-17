@@ -1,0 +1,211 @@
+# 🚀 Fusion Electronics – Docker & DevOps Assessment
+
+## 📌 Overview
+
+This repository demonstrates **end-to-end containerization** of a **MERN Stack E‑commerce application (Fusion Electronics)** using **Docker best practices**.
+
+The goal of this assessment is to show:
+
+* Clear understanding of **Docker fundamentals**
+* Proper use of **multi-stage Docker builds**
+* Clean separation of **frontend, backend, and database**
+* Ability to run the complete application locally using **Docker Compose**
+
+This setup closely follows **real-world DevOps workflows**.
+
+---
+
+## 🏗 Architecture
+
+```
+User (Browser)
+   │
+   ▼
+Frontend (React + Nginx)
+   │
+   ▼
+Backend (Node.js + Express)
+   │
+   ▼
+MongoDB (Official Image)
+```
+
+All services run as **independent containers** and communicate over a **Docker network** created by Docker Compose.
+
+---
+
+## 🐳 Dockerization Strategy
+
+### 1️⃣ Backend – Single Stage Dockerfile
+
+The backend is a **Node.js + Express API**.
+
+#### Why single-stage?
+
+* Backend does not require a build artifact
+* Node.js runtime is needed at execution time
+* Keeps Dockerfile simple and readable
+
+#### Backend Dockerfile (Concept)
+
+* Uses official `node:18` image
+* Installs dependencies
+* Copies application source code
+* Exposes backend API port
+* Starts the server using `npm start`
+
+**Why Node 18?**
+
+* Supports modern JavaScript syntax
+* Required by MongoDB driver
+* Long-term support (LTS)
+
+---
+
+### 2️⃣ Frontend – Multi‑Stage Dockerfile (Production‑Ready)
+
+The frontend is a **React SPA**.
+
+#### Why multi‑stage build?
+
+* React needs Node.js only to **build** the app
+* Final runtime should be **lightweight and secure**
+* Nginx is better suited to serve static files
+
+#### Stage 1 – Build Stage
+
+* Uses `node:18`
+* Installs dependencies
+* Runs `npm run build`
+* Generates optimized static files
+
+#### Stage 2 – Runtime Stage
+
+* Uses `nginx:alpine`
+* Copies only build output
+* Removes unnecessary build tools
+
+**Benefits:**
+
+* Smaller image size
+* Faster startup
+* Reduced attack surface
+
+---
+
+### 3️⃣ MongoDB – Official Image
+
+MongoDB runs using the **official Docker image**:
+
+```
+mongo:6.0
+```
+
+#### Why not a custom image?
+
+* Official images are:
+
+  * Well maintained
+  * Secure
+  * Optimized
+
+Docker Compose provides the MongoDB hostname to the backend via environment variables.
+
+---
+
+## 🧩 Docker Compose – Orchestration
+
+Docker Compose is used to:
+
+* Run all services together
+* Manage networking automatically
+* Control startup dependencies
+
+### Services Defined
+
+* `frontend`
+* `backend`
+* `mongodb`
+
+### Key Concepts Used
+
+* **Service-to-service communication** via container DNS
+* **Environment variables** for configuration
+* **Port mapping** for external access
+* **depends_on** for startup order
+
+---
+
+## ⚙️ docker-compose.yml (Concept Explanation)
+
+* Frontend exposed on port **3000**
+* Backend exposed on port **8080**
+* MongoDB exposed on port **27017**
+
+Backend connects to MongoDB using:
+
+```
+mongodb://mongodb:27017/Ecommerce-Products
+```
+
+> Note: `mongodb` is the service name, which Docker automatically resolves to the container IP.
+
+---
+
+## ▶️ How to Run the Application
+
+### Steps
+
+```bash
+# Stop existing containers
+docker compose down
+
+# Build images without cache
+docker compose build --no-cache
+
+# Start all services
+docker compose up -d 
+```
+
+### Access URLs
+
+| Service     | URL                                            |
+| ----------- | ---------------------------------------------- |
+| Frontend    | [http://localhost:3000](http://localhost:3000) |
+| Backend API | [http://localhost:8080](http://localhost:8080) |
+| MongoDB     | localhost:27017                                |
+
+---
+
+## ✅ Key DevOps Best Practices Demonstrated
+
+* ✔ Multi-stage Docker builds
+* ✔ Official base images
+* ✔ Environment-based configuration
+* ✔ Clear separation of concerns
+* ✔ Production-ready Nginx setup
+* ✔ Clean and reproducible local setup
+
+---
+
+## 🎯 Assessment Summary
+
+This project demonstrates the ability to:
+
+* Containerize a full-stack application
+* Optimize Docker images
+* Debug real-world Docker issues
+* Use Docker Compose as a local orchestration tool
+
+The setup closely mirrors **production-grade DevOps workflows**, making it easy to migrate later to **Kubernetes** or **CI/CD pipelines**.
+
+---
+
+## 👤 Author
+
+**Rakesh Chary**
+DevOps / Cloud Engineer
+
+---
+
+✅ *This repository was created as part of a DevOps assessment to demonstrate practical Docker knowledge rather than theoretical examples.*
