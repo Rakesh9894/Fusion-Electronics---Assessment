@@ -33,7 +33,6 @@ MongoDB (Official Image)
 All services run as **independent containers** and communicate over a **Docker network** created by Docker Compose.
 
 ---
-
 ## 🐳 Dockerization Strategy
 
 ### 1️⃣ Backend – Single Stage Dockerfile
@@ -53,6 +52,7 @@ The backend is a **Node.js + Express API**.
 * Copies application source code
 * Exposes backend API port
 * Starts the server using `npm start`
+
 
 **Why Node 18?**
 
