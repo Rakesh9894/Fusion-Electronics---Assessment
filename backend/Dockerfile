@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as a parent image, we can do use alpine and slim images as well
-FROM node:14
+FROM node:18
 
 # Set the working directory in the container, after this all command will be runned here
 WORKDIR /usr/src/app
